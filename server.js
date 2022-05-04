@@ -9,7 +9,7 @@ const corsOptions = require('./config/corsOptions');
 const mongoose = require('mongoose');
 const req = require('express/lib/request');
 const connectDB =require('./config/dbConn');
-const PORT = process.env.PORT || 3500;
+//const PORT = process.env.PORT || 3500;
 
 //Connect to MongoDB
 connectDB();
