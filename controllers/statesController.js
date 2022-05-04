@@ -1,7 +1,6 @@
 const statesJSONData = require('../model/states.json');
 const mongoStates = require('../model/States');
-const verifyStates = require('../middleware/verifyStates');
-const { restart } = require('nodemon');
+//const verifyStates = require('../middleware/verifyStates');
 
 
 //const combStates =
@@ -15,7 +14,6 @@ const getAllStates = (req, res) => {
     }else {
         statesList = statesJSONData;
     }
-    
 
   // statesJSONData.forEach(state => {
         //const stateExists = mongoStates.find(st => st.statecode === state.code);
