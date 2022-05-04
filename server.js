@@ -34,8 +34,6 @@ app.use('/', require('./routes/root'));
 app.use('/state', require('./routes/api/states'));
 app.use('/:state', require('./routes/api/states'));
 
-
-
 app.all('*', (req, res) => {
     res.status(404);
     if (req.accepts('html')) {

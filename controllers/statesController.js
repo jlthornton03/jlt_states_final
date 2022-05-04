@@ -1,6 +1,7 @@
 const statesJSONData = require('../model/states.json');
 const mongoStates = require('../model/States');
 const verifyStates = require('../middleware/verifyStates');
+const { restart } = require('nodemon');
 
 
 //const combStates =
@@ -28,7 +29,8 @@ const getAllStates = (req, res) => {
      //   console.log(stateExist);
 
     // });
-    res.json(statesList);
+    return res.json(statesList);
+    //res.json.stringify(statesList);
 }
 
 const getStateCapital =  async (req, res) => {
@@ -43,7 +45,7 @@ const getStateCapital =  async (req, res) => {
         }
       });
 
-    res.json(newArr);           
+    return res.json(newArr);           
 }
 const getStateNickname =  async (req, res) => {
     
@@ -60,7 +62,7 @@ const getStateNickname =  async (req, res) => {
           nickname: item.nickname
         }
       });
-    res.json(newArr);           
+    return res.json(newArr);           
 }
 
 const getStatePopulation =  async (req, res) => {
@@ -79,7 +81,7 @@ const getStatePopulation =  async (req, res) => {
           population: item.population
         }
       });
-    res.json(newArr);           
+    return res.json(newArr);           
 }
 
 const getStateAdmission =  async (req, res) => {
@@ -97,7 +99,9 @@ const getStateAdmission =  async (req, res) => {
           admitted: item.admission_date
         }
       });
-    res.json(newArr);           
+      ({ "message": `No employee matches ID ${req.body.id} ` });
+    //res.json( { "state" : `${newArr[state]}`  } )
+    return res.json(newArr);           
 }
 
 const getState =  async (req, res) => {
@@ -112,7 +116,8 @@ const getState =  async (req, res) => {
   //  const allstate = await mongoStates.find();
   //  console.log(allstate.funfact);
   //  if (!allstate) return res.status(204).json({ 'message': 'no states found.' })
-    res.json(stateList);
+    //newArr
+    return res.json(stateList);
 }
 
 
