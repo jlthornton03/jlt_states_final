@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const req = require('express/lib/request');
 const statesController = require('../../controllers/statesController');
-const verifyStates = require('../../middleware/verifyStates')
-//const verifyStates = require('../../middleware/verifyStates');
+const verifyStates = require('../../middleware/verifyStates');
+const path = require('path');
+const { verify } = require('crypto');
+
 
 router.route('/')
     .get(statesController.getAllStates)
@@ -12,15 +15,15 @@ router.route('/')
    // .delete(verifyRoles(ROLES_LIST.Admin), usersController.deleteUser);
 
 router.route('/:state')
-    .get(statesController.getState)
+    .get(verifyStates(), statesController.getState)
 router.route('/:state/capital/')
-    .get(statesController.getStateCapital)
+    .get(verifyStates(), statesController.getStateCapital)
 router.route('/:state/nickname/')
-    .get(statesController.getStateNickname)
+    .get(verifyStates(), statesController.getStateNickname)
 router.route('/:state/population/')
-    .get(statesController.getStatePopulation)
+    .get(verifyStates(), statesController.getStatePopulation)
 router.route('/:state/admission/')
-    .get(statesController.getStateAdmission)
+    .get(verifyStates(), statesController.getStateAdmission)
 //    .post()
 //   .put()
 //    .delete();
