@@ -15,9 +15,7 @@ const getAllStates = async (req, res) => {
     let mergedData =[];
     statesList.forEach ( state => {
         const stateExists = mongoArr.find(st => st.stateCode === state.code)
-        
         if (stateExists){
-            console.log(stateExists.funfact)
             newArr = {
                 ...state,
                 "funfacts": stateExists.funfact 
@@ -26,11 +24,9 @@ const getAllStates = async (req, res) => {
             newArr = {
                 ...state
             };
-        
         }
         mergedData.push(newArr);
     })
-
     res.json(mergedData);
 }
 
