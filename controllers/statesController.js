@@ -88,12 +88,23 @@ const getStateAdmission =  async (req, res) => {
 const getState =  async (req, res) => {
 
      stateList = statesJSONData.filter(st => st.code === req.params.state.toUpperCase());
-
-  //  const allstate = await mongoStates.find();
-  //  console.log(allstate.funfact);
-  //  if (!allstate) return res.status(204).json({ 'message': 'no states found.' })
-    //newArr
-    return res.json(stateList);
+     const mongoArr = await mongoStates.find();
+     let mergedData =[];
+     stateList.forEach ( state => {
+         const stateExists = mongoArr.find(st => st.stateCode === state.code)
+         if (stateExists){
+             newArr = {
+                 ...state,
+                 "funfacts": stateExists.funfact 
+             }
+         }else{
+             newArr = {
+                 ...state
+             };
+         }
+         mergedData.push(newArr);
+     })
+     res.json(mergedData);
 }
 
 
