@@ -89,20 +89,23 @@ const getState =  async (req, res) => {
 
      stateList = statesJSONData.filter(st => st.code === req.params.state.toUpperCase());
      const mongoArr = await mongoStates.find();
-     let mergedData =[];
      stateList.forEach ( state => {
-         const stateExists = mongoArr.find(st => st.stateCode === state.code)
+
+         const stateExists = mongoArr.find(st => st.stateCode === state.code);
+
          if (stateExists){
-             newArr = {
+             console.log("test")
+              mergedData = 
+                 {
                  ...state,
                  "funfacts": stateExists.funfact 
-             }
+                 }
          }else{
-             newArr = {
+             
+             mergedData = {
                  ...state
              };
          }
-         mergedData.push(newArr);
      })
      res.json(mergedData);
 }
