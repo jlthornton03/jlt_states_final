@@ -42,7 +42,7 @@ const getStateCapital =  async (req, res) => {
         }
       });
 
-    return res.json(newArr);           
+    return res.json(newArr[0]);           
 }
 const getStateNickname =  async (req, res) => {
     
@@ -54,7 +54,7 @@ const getStateNickname =  async (req, res) => {
           nickname: item.nickname
         }
       });
-    return res.json(newArr);           
+    return res.json(newArr[0]);           
 }
 
 const getStatePopulation =  async (req, res) => {
@@ -67,7 +67,7 @@ const getStatePopulation =  async (req, res) => {
           population: item.population
         }
       });
-    return res.json(newArr);           
+    return res.json(newArr[0]);           
 }
 
 const getStateAdmission =  async (req, res) => {
@@ -80,13 +80,10 @@ const getStateAdmission =  async (req, res) => {
           admitted: item.admission_date
         }
       });
-      ({ "message": `No employee matches ID ${req.body.id} ` });
-    //res.json( { "state" : `${newArr[state]}`  } )
-    return res.json(newArr);           
+    return res.json(newArr[0]);           
 }
 
 const getState =  async (req, res) => {
-
      stateList = statesJSONData.filter(st => st.code === req.params.state.toUpperCase());
      const mongoArr = await mongoStates.find();
      stateList.forEach ( state => {
