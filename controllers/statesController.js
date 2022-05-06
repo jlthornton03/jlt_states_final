@@ -138,8 +138,26 @@ const createNewFunFact = async (req, res) => {
     if ((Array.isArray(req.body.funfacts) === false)){
         return res.status(400).json({ 'message': 'State fun facts value must be an array' });
     }
-
+    
     const stateAbbr = req.params.state.toUpperCase();
+
+    const mongoArr = await mongoStates.find();
+    const stateExists = mongoArr.find(st => st.stateCode === stateAbbr);
+
+
+
+    if (!stateExists){
+        try {
+            await mongoStates.create({
+                stateCode: stateAbbr
+            });
+        } catch (err) {
+            console.error(err);
+        }
+
+        
+    }
+    
     const result = await mongoStates.findOneAndUpdate({ stateCode: stateAbbr}, { $push: {funfacts: { $each: req.body.funfacts } } });
 
 
