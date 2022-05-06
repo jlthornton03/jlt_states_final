@@ -161,7 +161,7 @@ const updateFunFact = async (req, res) => {
     if (!req?.body?.index){
         return res.status(400).json({ 'message': 'State fun fact index value required' });
     }
-    if (!req?.body?.funfacts){
+    if (!req?.body?.funfact){
         return res.status(400).json({ 'message': 'State fun fact value required' });
     }
 
@@ -182,7 +182,7 @@ const updateFunFact = async (req, res) => {
     var funfactIn = "funfacts." + arrIndex;
     console.log(funfactIn);
     var query= { stateCode: stateAbbr};
-    var update = {  [funfactIn] : req.body.funfacts };
+    var update = {  [funfactIn] : req.body.funfact };
     console.log(update);
     const result = await mongoStates.findOneAndUpdate(query, update, {new: true});
 
