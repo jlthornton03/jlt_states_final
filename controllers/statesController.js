@@ -168,28 +168,64 @@ const updateFunFact = async (req, res) => {
     const stateAbbr = req.params.state.toUpperCase();
     const stateArr = statesJSONData.filter(st => st.code === stateAbbr);
     const mongoArr = await mongoStates.find();
-    const stateExists = mongoArr.find(st => st.stateCode === stateAbbr);
+    const stateExists = await mongoArr.find(st => st.stateCode === stateAbbr);
     const stateName =stateArr[0].state
 
     if (!stateExists){
         return res.status(400).json({ 'message': `No Fun Facts found for ${stateName}` });
         }
     
-    //"No fun facts found at that index for STATE NAME"
-
-
     arrIndex=req.body.index -1;
+    const indexExists = await mongoStates.find({ stateCode: stateAbbr }).select('funfacts');
+    if (!indexExists[arrIndex]){
+        return res.status(400).json({ 'message': `No Fun Facts found at that index for ${stateName}` });
+    }
+
     var funfactIn = "funfacts." + arrIndex;
-    console.log(funfactIn);
+
     var query= { stateCode: stateAbbr};
     var update = {  [funfactIn] : req.body.funfact };
-    console.log(update);
+    
     const result = await mongoStates.findOneAndUpdate(query, update, {new: true});
 
     res.status(201).json(result);
 }
+
+
 const deleteFunFact = async (req, res) => {
 
+    if (!req?.body?.index){
+        return res.status(400).json({ 'message': 'State fun fact index value required' });
+    }
+    if (!req?.body?.funfact){
+        return res.status(400).json({ 'message': 'State fun fact value required' });
+    }
+
+    const stateAbbr = req.params.state.toUpperCase();
+    const stateArr = statesJSONData.filter(st => st.code === stateAbbr);
+    const mongoArr = await mongoStates.find();
+    const stateExists = mongoArr.find(st => st.stateCode === stateAbbr);
+    const stateName =stateArr[0].state;
+
+    if (!stateExists){
+        return res.status(400).json({ 'message': `No Fun Facts found for ${stateName}` });
+        }
+
+
+    arrIndex=req.body.index -1;
+    const indexExists = await mongoStates.find({ stateCode: stateAbbr }).select('funfacts');
+    if (!indexExists[arrIndex]){
+        return res.status(400).json({ 'message': `No Fun Facts found at that index for ${stateName}` });
+    }
+
+   // const result = await mongoStates.findOneAndUpdate(query, update, {new: true});
+    const resultPush = await mongoStates.funfact.push ({_id: arrIndex })
+    console.log(resultPush);
+    const result = await mongoStates.funfact.push ({_id: arrIndex })
+   // doc.subdocs.push({ _id: 4815162342 })
+   // doc.subdocs.pull({ _id: 4815162342 })
+
+    res.status(201).json(result);
 }
 module.exports = {
     getAllStates,
