@@ -24,6 +24,8 @@ router.route('/:state/population/')
     .get(verifyStates(), statesController.getStatePopulation)
 router.route('/:state/admission/')
     .get(verifyStates(), statesController.getStateAdmission)
+router.route('/:state/funfact/')
+    .get(verifyStates(), statesController.getStateFunfact)
 //    .post()
 //   .put()
 //    .delete();

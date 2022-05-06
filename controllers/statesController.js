@@ -89,20 +89,23 @@ const getStateFunfact =  async (req, res) => {
     
     stateList.forEach ( state => {
         const stateExists = mongoArr.find(st => st.stateCode === state.code);
-
-      
         if (stateExists){
-            let newArr = stateList.map((item) => {
+            newArr = stateList.map((item) => {
                 return {
                   state: item.state,
                   funfacts: stateExists.funfact 
                 }
               });
         }else{
-            mergedData = { "message":"No Fun Facts found for `${state.name}`"}
+            newArr = stateList.map((item) => {
+                return {
+                    message: "No Fun Facts found for " + item.state
+                }
+            });
         }
-    })
-    res.json(mergedData);
+    });
+
+    res.json(newArr[0]);
 }
 
 
