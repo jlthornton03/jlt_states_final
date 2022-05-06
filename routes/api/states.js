@@ -7,7 +7,7 @@ const path = require('path');
 const { verify } = require('crypto');
 
 
-router.route('/')
+router.route('/state')
     .get(statesController.getAllStates)
 
 
