@@ -37,7 +37,7 @@ const getStateCapital =  async (req, res) => {
     let newArr = stateList.map((item) => {
         return {
           state: item.state,
-          captial: item.capital_city
+          capital: item.capital_city
       
         }
       });
@@ -60,11 +60,11 @@ const getStateNickname =  async (req, res) => {
 const getStatePopulation =  async (req, res) => {
 
     stateList = statesJSONData.filter(st => st.code === req.params.state.toUpperCase());
-    
+   // population = String(item.population).replace(/(.)(?=(\d{3})+$)/g,'$1,')
     let newArr = stateList.map((item) => {
         return {
           state: item.state,
-          population: item.population
+          population: String(item.population).replace(/(.)(?=(\d{3})+$)/g,'$1,')
         }
       });
     return res.json(newArr[0]);           
