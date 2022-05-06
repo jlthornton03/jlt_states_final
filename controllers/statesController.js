@@ -92,8 +92,7 @@ const getStateFunfact =  async (req, res) => {
         if (stateExists){
             newArr = stateList.map((item) => {
                 return {
-                  state: item.state,
-                  funfacts: stateExists.funfact 
+                  funfact: stateExists.funfact 
                 }
               });
         }else{
