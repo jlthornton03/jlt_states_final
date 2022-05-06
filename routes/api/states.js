@@ -26,14 +26,9 @@ router.route('/:state/admission/')
     .get(verifyStates(), statesController.getStateAdmission)
 router.route('/:state/funfact/')
     .get(verifyStates(), statesController.getStateFunfact)
-//    .post()
-//   .put()
-//    .delete();
+    .post(verifyStates(), statesController.createNewFunFact)
+//  .put()
+//  .delete();
 
-//router.route('/:state')
-//    .get(stateController.getState);
-
-//router.route('/:state')
-//    .get(stateController.getState);
 
 module.exports = router;
