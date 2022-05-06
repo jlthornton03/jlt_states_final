@@ -178,7 +178,7 @@ const updateFunFact = async (req, res) => {
     arrIndex=req.body.index -1;
     const indexExists = await mongoStates.find({ stateCode: stateAbbr }).select('funfacts');
     if (!indexExists[arrIndex]){
-        return res.status(400).json({ 'message': `No Fun Facts found at that index for ${stateName}` });
+        return res.status(400).json({ 'message': `No Fun Fact found at that index for ${stateName}` });
     }
 
     var funfactIn = "funfacts." + arrIndex;
@@ -215,7 +215,7 @@ const deleteFunFact = async (req, res) => {
     arrIndex=req.body.index -1;
     const indexExists = await mongoStates.find({ stateCode: stateAbbr }).select('funfacts');
     if (!indexExists[arrIndex]){
-        return res.status(400).json({ 'message': `No Fun Facts found at that index for ${stateName}` });
+        return res.status(400).json({ 'message': `No Fun Fact found at that index for ${stateName}` });
     }
 
    // const result = await mongoStates.findOneAndUpdate(query, update, {new: true});
