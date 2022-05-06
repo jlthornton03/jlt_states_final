@@ -83,6 +83,29 @@ const getStateAdmission =  async (req, res) => {
     return res.json(newArr[0]);           
 }
 
+const getStateFunfact =  async (req, res) => {
+    stateList = statesJSONData.filter(st => st.code === req.params.state.toUpperCase());
+    const mongoArr = await mongoStates.find();
+    
+    stateList.forEach ( state => {
+        const stateExists = mongoArr.find(st => st.stateCode === state.code);
+
+      
+        if (stateExists){
+            let newArr = stateList.map((item) => {
+                return {
+                  state: item.state,
+                  funfacts: stateExists.funfact 
+                }
+              });
+        }else{
+            mergedData = { "message":"No Fun Facts found for `${state.name}`"}
+        }
+    })
+    res.json(mergedData);
+}
+
+
 const getState =  async (req, res) => {
      stateList = statesJSONData.filter(st => st.code === req.params.state.toUpperCase());
      const mongoArr = await mongoStates.find();
@@ -116,5 +139,6 @@ module.exports = {
     getStateCapital,
     getStateNickname,
     getStatePopulation,
-    getStateAdmission
+    getStateAdmission,
+    getStateFunfact
 }
