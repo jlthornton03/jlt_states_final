@@ -197,9 +197,6 @@ const deleteFunFact = async (req, res) => {
     if (!req?.body?.index){
         return res.status(400).json({ 'message': 'State fun fact index value required' });
     }
-    if (!req?.body?.funfact){
-        return res.status(400).json({ 'message': 'State fun fact value required' });
-    }
 
     const stateAbbr = req.params.state.toUpperCase();
     const stateArr = statesJSONData.filter(st => st.code === stateAbbr);
@@ -218,12 +215,24 @@ const deleteFunFact = async (req, res) => {
         return res.status(400).json({ 'message': `No Fun Fact found at that index for ${stateName}` });
     }
 
-   // const result = await mongoStates.findOneAndUpdate(query, update, {new: true});
-    const resultPush = await mongoStates.funfact.push ({_id: arrIndex })
-    console.log(resultPush);
-    const result = await mongoStates.funfact.push ({_id: arrIndex })
-   // doc.subdocs.push({ _id: 4815162342 })
-   // doc.subdocs.pull({ _id: 4815162342 })
+    var funfactIn = "funfacts." + arrIndex;
+
+    var query= { stateCode: stateAbbr};
+    var update = {  [funfactIn] : req.body.funfact };
+
+    //await mongoStates.find({ stateCode: stateAbbr }).select('funfacts');
+    var query= { stateCode: stateAbbr};
+    var update = {  [funfactIn] : '**DELETE**' };
+    
+    await mongoStates.findOneAndUpdate(query, update, {new: true});
+
+    const result = await mongoStates.findOneAndUpdate(query, 
+        { $pull : { funfacts: '**DELETE**' } }  
+        , {new: true});
+
+    
+    console.log(result);
+
 
     res.status(201).json(result);
 }
