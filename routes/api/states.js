@@ -27,8 +27,8 @@ router.route('/:state/admission/')
 router.route('/:state/funfact/')
     .get(verifyStates(), statesController.getStateFunfact)
     .post(verifyStates(), statesController.createNewFunFact)
-//  .put()
-//  .delete();
+    .put(verifyStates(), statesController.updateFunFact)
+    .delete(verifyStates(), statesController.deleteFunFact);
 
 
 module.exports = router;

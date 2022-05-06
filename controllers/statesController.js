@@ -138,13 +138,10 @@ const createNewFunFact = async (req, res) => {
     if ((Array.isArray(req.body.funfacts) === false)){
         return res.status(400).json({ 'message': 'State fun facts value must be an array' });
     }
-    
-    const stateAbbr = req.params.state.toUpperCase();
 
+    const stateAbbr = req.params.state.toUpperCase();
     const mongoArr = await mongoStates.find();
     const stateExists = mongoArr.find(st => st.stateCode === stateAbbr);
-
-
 
     if (!stateExists){
         try {
@@ -154,37 +151,41 @@ const createNewFunFact = async (req, res) => {
         } catch (err) {
             console.error(err);
         }
-
-        
     }
     
-    const result = await mongoStates.findOneAndUpdate({ stateCode: stateAbbr}, { $push: {funfacts: { $each: req.body.funfacts } } });
-
-
-    //stateList = statesJSONData.filter(st => st.code === stateAbbr);
-    //const mongoArr = await mongoStates.find();
-    //stateList.forEach ( state => {
-    //    const stateExists = mongoArr.find(st => st.stateCode === state.code);
-    //    if (stateExists){
-    //        newArr = stateList.map((item) => {
-    //            return {
-    //              funfact: stateExists.funfact 
-    //            }
-    //          });
-    //    }else{
-    //        newArr = stateList.map((item) => {
-    //            return {
-    //                message: "No Fun Facts found for " + item.state
-    //            }
-    //        });
-    //    }
-    //});
-
+    const result = await mongoStates.findOneAndUpdate({ stateCode: stateAbbr}, { $push: {funfacts: { $each: req.body.funfacts } } }, {new: true});
     res.status(201).json(result);
 }
 
+const updateFunFact = async (req, res) => {
 
+    if (!req?.body?.funfacts){
+        return res.status(400).json({ 'message': 'State fun facts value required' });
+    }
+    if ((Array.isArray(req.body.funfacts) === false)){
+        return res.status(400).json({ 'message': 'State fun facts value must be an array' });
+    }
 
+    const stateAbbr = req.params.state.toUpperCase();
+    const mongoArr = await mongoStates.find();
+    const stateExists = mongoArr.find(st => st.stateCode === stateAbbr);
+
+    if (!stateExists){
+        try {
+            await mongoStates.create({
+                stateCode: stateAbbr
+            });
+        } catch (err) {
+            console.error(err);
+        }
+    }
+    
+    const result = await mongoStates.findOneAndUpdate({ stateCode: stateAbbr}, { $push: {funfacts: { $each: req.body.funfacts } } });
+    res.status(201).json(result);
+}
+const deleteFunFact = async (req, res) => {
+
+}
 module.exports = {
     getAllStates,
     getState,
@@ -193,5 +194,7 @@ module.exports = {
     getStatePopulation,
     getStateAdmission,
     getStateFunfact, 
-    createNewFunFact
+    createNewFunFact,
+    updateFunFact,
+    deleteFunFact
 }
