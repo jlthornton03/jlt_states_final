@@ -152,35 +152,40 @@ const createNewFunFact = async (req, res) => {
             console.error(err);
         }
     }
-    
     const result = await mongoStates.findOneAndUpdate({ stateCode: stateAbbr}, { $push: {funfacts: { $each: req.body.funfacts } } }, {new: true});
     res.status(201).json(result);
 }
 
 const updateFunFact = async (req, res) => {
 
-    if (!req?.body?.funfacts){
-        return res.status(400).json({ 'message': 'State fun facts value required' });
+    if (!req?.body?.index){
+        return res.status(400).json({ 'message': 'State fun fact index value required' });
     }
-    if ((Array.isArray(req.body.funfacts) === false)){
-        return res.status(400).json({ 'message': 'State fun facts value must be an array' });
+    if (!req?.body?.funfacts){
+        return res.status(400).json({ 'message': 'State fun fact value required' });
     }
 
     const stateAbbr = req.params.state.toUpperCase();
+    const stateArr = statesJSONData.filter(st => st.code === stateAbbr);
     const mongoArr = await mongoStates.find();
     const stateExists = mongoArr.find(st => st.stateCode === stateAbbr);
+    const stateName =stateArr[0].state
 
     if (!stateExists){
-        try {
-            await mongoStates.create({
-                stateCode: stateAbbr
-            });
-        } catch (err) {
-            console.error(err);
+        return res.status(400).json({ 'message': `No Fun Facts found for ${stateName}` });
         }
-    }
     
-    const result = await mongoStates.findOneAndUpdate({ stateCode: stateAbbr}, { $push: {funfacts: { $each: req.body.funfacts } } });
+    //"No fun facts found at that index for STATE NAME"
+
+
+    arrIndex=req.body.index -1;
+    var funfactIn = "funfacts." + arrIndex;
+    console.log(funfactIn);
+    var query= { stateCode: stateAbbr};
+    var update = {  [funfactIn] : req.body.funfacts };
+    console.log(update);
+    const result = await mongoStates.findOneAndUpdate(query, update, {new: true});
+
     res.status(201).json(result);
 }
 const deleteFunFact = async (req, res) => {
