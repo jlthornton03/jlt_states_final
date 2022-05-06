@@ -7,13 +7,8 @@ const path = require('path');
 const { verify } = require('crypto');
 
 
-router.route('/state')
+router.route('/states')
     .get(statesController.getAllStates)
-
-
-  //  .get(verifyRoles(ROLES_LIST.Admin), usersController.getAllUsers)
-   // .delete(verifyRoles(ROLES_LIST.Admin), usersController.deleteUser);
-
 router.route('/:state')
     .get(verifyStates(), statesController.getState)
 router.route('/:state/capital/')
